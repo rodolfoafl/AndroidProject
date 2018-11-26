@@ -34,6 +34,15 @@ class FilmeViewModel(application: Application) : AndroidViewModel(application) {
         repository.insert(filme)
     }
 
+    fun update(filme: Filme) = scope.launch(Dispatchers.IO){
+        repository.update(filme)
+    }
+
+
+    fun delete(filme: Filme) = scope.launch(Dispatchers.IO){
+        repository.delete(filme)
+    }
+
     override fun onCleared() {
         super.onCleared()
         parentJob.cancel()
