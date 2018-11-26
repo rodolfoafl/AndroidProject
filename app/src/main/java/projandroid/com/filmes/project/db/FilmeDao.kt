@@ -1,15 +1,19 @@
 package projandroid.com.filmes.project.db
 
 import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 
 @Dao
 interface FilmeDao {
 
     @Insert
     fun insert(filme: Filme)
+
+    @Update
+    fun update(filme: Filme)
+
+    @Delete
+    fun delete(filme: Filme)
 
     @Query("DELETE FROM filmes")
     fun deleteAll()

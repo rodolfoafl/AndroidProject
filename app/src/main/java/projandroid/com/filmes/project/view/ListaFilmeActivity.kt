@@ -40,7 +40,6 @@ class ListaFilmeActivity : AppCompatActivity() {
             val intent = Intent(this@ListaFilmeActivity, NovoFilmeActivity::class.java)
             startActivityForResult(intent, requestCodeAddFilme)
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
