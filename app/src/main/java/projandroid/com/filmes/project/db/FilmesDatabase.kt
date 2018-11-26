@@ -1,4 +1,4 @@
-package projandroid.com.produtos.project.db
+package projandroid.com.filmes.project.db
 
 import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.Database
@@ -10,24 +10,24 @@ import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.IO
 import kotlinx.coroutines.experimental.launch
 
-@Database(entities = [Celular::class], version = 2)
-abstract class ProdutosDatabase: RoomDatabase() {
+@Database(entities = [Filme::class], version = 3)
+abstract class FilmesDatabase: RoomDatabase() {
 
-    abstract fun celularDAO():CelularDao
+    abstract fun filmeDAO():FilmeDao
 
     companion object {
 
         @Volatile
-        private var INSTANCE: ProdutosDatabase? = null
-        fun getDatabase(context: Context, scope: CoroutineScope):ProdutosDatabase{
+        private var INSTANCE: FilmesDatabase? = null
+        fun getDatabase(context: Context, scope: CoroutineScope):FilmesDatabase{
             return INSTANCE ?: synchronized(this){
                 val instance = Room.databaseBuilder(
                         context.applicationContext,
-                        ProdutosDatabase::class.java,
-                        "produtos-database"
+                        FilmesDatabase::class.java,
+                        "filmes-database"
                 )
                         .fallbackToDestructiveMigration()
-                        .addCallback(ProdutosDatabaseCallBack(scope))
+                        .addCallback(FilmesDatabaseCallBack(scope))
                         .build()
                     INSTANCE = instance
                 instance
@@ -35,7 +35,7 @@ abstract class ProdutosDatabase: RoomDatabase() {
         }
     }
 
-    private class ProdutosDatabaseCallBack(
+    private class FilmesDatabaseCallBack(
             private val scope: CoroutineScope
     ): RoomDatabase.Callback(){
 
@@ -43,16 +43,16 @@ abstract class ProdutosDatabase: RoomDatabase() {
             super.onOpen(db)
             INSTANCE?.let { database ->
                 scope.launch(Dispatchers.IO) {
-                   populaTabela(database.celularDAO())
+                   //populaTabela(database.filmeDAO())
                 }
             }
         }
-        fun populaTabela(celularDao: CelularDao){
-            celularDao.deleteAll()
-            celularDao.insert(Celular(id= 1, modelo = "Teste 1", preco = 500.00))
-            celularDao.insert(Celular(id= 2, modelo = "Teste 2", preco = 400.00))
-            celularDao.insert(Celular(id= 3, modelo = "Teste 3", preco = 350.00))
-        }
+        /*fun populaTabela(filmeDao: FilmeDao){
+            filmeDao.deleteAll()
+            filmeDao.insert(Filme(id= 1, nome = "Teste 1", descricao = "desc1"))
+            filmeDao.insert(Filme(id= 2, nome = "Teste 2", descricao = "desc2"))
+            filmeDao.insert(Filme(id= 3, nome = "Teste 3", descricao = "desc3"))
+        }*/
     }
 
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Produtos</string>
+    <string name="app_name">Filmes</string>
     <string name="name">Nome</string>
     <string name="tel">(41) 99999-9999</string>
     <string name="mail">mail@gmail.com</string>
@@ -21,4 +21,8 @@
     <string name="modelo">Modelo</string>
     <string name="txtModelo">Modelo:</string>
     <string name="txtPreco">Preço:</string>
+    <string name="txtNome">Nome:</string>
+    <string name="txtDescricao">Descrição:</string>
+    <string name="hintNome">Nome</string>
+    <string name="hintDescricao">Descrição</string>
 </resources>

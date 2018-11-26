@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NovoAmigoActivity">
+    tools:context=".project.view.NovoFilmeActivity">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imgNovoCelular"
+            android:id="@+id/imgNovoFilme"
             android:layout_width="0dp"
             android:layout_height="250dp"
             android:adjustViewBounds="false"
@@ -23,32 +23,32 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fAddCelular"
+            android:id="@+id/fAddFilme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="230dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="4dp"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_add_photo_24dp" />
+            app:srcCompat="@drawable/ic_add_a_photo_new_24dp" />
 
         <TextView
-            android:id="@+id/txtModelo"
+            android:id="@+id/txtNome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/txtModelo"
+            android:text="@string/txtNome"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgNovoCelular" />
+            app:layout_constraintTop_toBottomOf="@+id/imgNovoFilme" />
 
         <EditText
-            android:id="@+id/etModelo"
+            android:id="@+id/etNome"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -56,25 +56,25 @@
             android:layout_marginEnd="8dp"
             android:autofillHints="@string/name"
             android:ems="10"
-            android:hint="@string/modelo"
+            android:hint="@string/hintNome"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtModelo" />
+            app:layout_constraintTop_toBottomOf="@+id/txtNome" />
 
         <TextView
-            android:id="@+id/txtPreco"
+            android:id="@+id/txtDescricao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/txtPreco"
+            android:text="@string/txtDescricao"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etModelo" />
+            app:layout_constraintTop_toBottomOf="@+id/etNome" />
 
         <EditText
-            android:id="@+id/etPreco"
+            android:id="@+id/etDescricao"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -82,12 +82,12 @@
             android:layout_marginEnd="8dp"
             android:autofillHints="@string/tel"
             android:ems="10"
-            android:hint="@string/moeda"
-            android:inputType="numberDecimal"
+            android:hint="@string/hintDescricao"
+            android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtPreco" />
+            app:layout_constraintTop_toBottomOf="@+id/txtDescricao" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

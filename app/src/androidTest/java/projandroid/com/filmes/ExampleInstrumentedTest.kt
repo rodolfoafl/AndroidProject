@@ -1,4 +1,4 @@
-package projandroid.com.produtos
+package projandroid.com.filmes
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

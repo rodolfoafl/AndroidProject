@@ -1,4 +1,4 @@
-package projandroid.com.produtos
+package projandroid.com.filmes
 
 import org.junit.Test
 

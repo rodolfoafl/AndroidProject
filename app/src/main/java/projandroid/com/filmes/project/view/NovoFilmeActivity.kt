@@ -1,4 +1,4 @@
-package projandroid.com.produtos
+package projandroid.com.filmes.project.view
 
 import android.Manifest
 import android.app.Activity
@@ -13,22 +13,24 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_novo_celular.*
+import kotlinx.android.synthetic.main.activity_novo_filme.*
+import projandroid.com.filmes.R
+import projandroid.com.filmes.project.db.Filme
 
-class NovoCelularActivity : AppCompatActivity() {
+class NovoFilmeActivity : AppCompatActivity() {
 
     private var image_uri : Uri? = null
     private var mCurrentPhotoPath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_novo_celular)
+        setContentView(R.layout.activity_novo_filme)
 
         // botão de voltar ativo no menu superior esquerdo
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        fAddCelular?.setOnClickListener {
-            fAddCelular.setOnCreateContextMenuListener { menu, v, menuInfo ->
+        fAddFilme?.setOnClickListener {
+            fAddFilme.setOnCreateContextMenuListener { menu, v, menuInfo ->
                 menu.add(Menu.NONE, 1, Menu.NONE, "Escolher foto")
                 menu.add(Menu.NONE, 2, Menu.NONE, "Tirar foto")
             }
@@ -104,7 +106,7 @@ class NovoCelularActivity : AppCompatActivity() {
         // image pick code
         private val REQUEST_IMAGE_GARELLY = 1000
         private val REQUEST_IMAGE_CAPTURE = 2000
-
+        const val EXTRA_REPLY = "view.REPLY"
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -121,9 +123,9 @@ class NovoCelularActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_GARELLY) imgNovoCelular.setImageURI(data?.data)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_GARELLY) imgNovoFilme.setImageURI(data?.data)
 
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_CAPTURE) imgNovoCelular.setImageURI(image_uri)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_CAPTURE) imgNovoFilme.setImageURI(image_uri)
 
     }
 
@@ -138,15 +140,28 @@ class NovoCelularActivity : AppCompatActivity() {
     // ---- menu ----
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_novo_amigo, menu)
+        menuInflater.inflate(R.menu.menu_novo_filme, menu)
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return if (item?.itemId == android.R.id.home) {
-            finish()
-            true
-        } else{
-            super.onOptionsItemSelected(item)
+        return when {
+            item?.itemId == android.R.id.home -> {
+                finish()
+                true
+            }
+            item?.itemId == R.id.menu_salvar_filme -> {
+                if(etNome.text.isNullOrEmpty()){
+                    Toast.makeText(this, "Insira o nome do filme!", Toast.LENGTH_LONG).show()
+                }else{
+                    val filme = Filme(nome = etNome.text.toString(), descricao = etDescricao.text.toString())
+                    val replyIntent = Intent()
+                    replyIntent.putExtra(EXTRA_REPLY, filme)
+                    setResult(Activity.RESULT_OK, replyIntent)
+                }
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }
