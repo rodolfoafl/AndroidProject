@@ -21,6 +21,15 @@ class NovoFilmeActivity : AppCompatActivity() {
 
     private var image_uri : Uri? = null
     private var mCurrentPhotoPath: String = ""
+    lateinit var filme: Filme
+
+    companion object {
+        // image pick code
+        private val REQUEST_IMAGE_GALLERY = 1000
+        private val REQUEST_IMAGE_CAPTURE = 2000
+        const val EXTRA_REPLY = "view.REPLY"
+        const val EXTRA_DELETE = "view.DELETE"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +44,22 @@ class NovoFilmeActivity : AppCompatActivity() {
                 menu.add(Menu.NONE, 2, Menu.NONE, "Tirar foto")
             }
         }
+
+        val intent: Intent = intent
+
+        try{
+            filme = intent.getSerializableExtra(EXTRA_REPLY) as Filme
+            filme.let {
+                etNome.setText(filme.nome)
+                etDescricao.setText(filme.descricao)
+            }
+        }catch(e: Exception){ }
     }
 
     private fun pickImageFromGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_IMAGE_GARELLY)
+        startActivityForResult(intent, REQUEST_IMAGE_GALLERY)
     }
 
     private fun takePicture() {
@@ -70,7 +89,7 @@ class NovoFilmeActivity : AppCompatActivity() {
                     PackageManager.PERMISSION_DENIED) {
                 // permission denied
                 val permission = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-                requestPermissions(permission, REQUEST_IMAGE_GARELLY)
+                requestPermissions(permission, REQUEST_IMAGE_GALLERY)
             } else {
                 // permission granted
                 pickImageFromGallery()
@@ -102,16 +121,9 @@ class NovoFilmeActivity : AppCompatActivity() {
         }
     }
 
-    companion object {
-        // image pick code
-        private val REQUEST_IMAGE_GARELLY = 1000
-        private val REQUEST_IMAGE_CAPTURE = 2000
-        const val EXTRA_REPLY = "view.REPLY"
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when(requestCode){
-            REQUEST_IMAGE_GARELLY -> {
+            REQUEST_IMAGE_GALLERY -> {
                 if(grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) pickImageFromGallery()
                 else Toast.makeText(this, "Permissão negada", Toast.LENGTH_SHORT).show()
             }
@@ -123,7 +135,7 @@ class NovoFilmeActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_GARELLY) imgNovoFilme.setImageURI(data?.data)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_GALLERY) imgNovoFilme.setImageURI(data?.data)
 
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_CAPTURE) imgNovoFilme.setImageURI(image_uri)
 
@@ -141,8 +153,17 @@ class NovoFilmeActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_novo_filme, menu)
+        val menuItem = menu?.findItem(R.id.menu_deletar_filme)
+        try{
+            filme.let {
+                menuItem?.isVisible = true
+            }
+        }catch(e: Exception){
+            menuItem?.isVisible = false
+        }
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when {
             item?.itemId == android.R.id.home -> {
@@ -153,12 +174,24 @@ class NovoFilmeActivity : AppCompatActivity() {
                 if(etNome.text.isNullOrEmpty()){
                     Toast.makeText(this, "Insira o nome do filme!", Toast.LENGTH_LONG).show()
                 }else{
-                    val filme = Filme(nome = etNome.text.toString(), descricao = etDescricao.text.toString())
+                    if (filme.id > 0){
+                        filme.nome = etNome.text.toString()
+                        filme.descricao = etDescricao.text.toString()
+                    }
+                    else{
+                        val filme = Filme(nome = etNome.text.toString(), descricao = etDescricao.text.toString())
+                    }
                     val replyIntent = Intent()
                     replyIntent.putExtra(EXTRA_REPLY, filme)
                     setResult(Activity.RESULT_OK, replyIntent)
                 }
                 finish()
+                true
+            }
+            item?.itemId == R.id.menu_deletar_filme -> {
+                val replyIntent = Intent()
+                replyIntent.putExtra(EXTRA_DELETE, filme)
+                setResult(Activity.RESULT_OK, replyIntent)
                 true
             }
             else -> super.onOptionsItemSelected(item)

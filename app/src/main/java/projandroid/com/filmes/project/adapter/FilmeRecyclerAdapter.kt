@@ -16,6 +16,7 @@ RecyclerView.Adapter<FilmeRecyclerAdapter.ViewHolder>(){
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var filmes = emptyList<Filme>()
+    var onItemClick: ((Filme) -> Unit)? = null
 
     override fun onCreateViewHolder(holder: ViewGroup, position: Int): FilmeRecyclerAdapter.ViewHolder {
         val view = inflater.inflate(R.layout.item_lista_filme, holder, false)
@@ -33,6 +34,12 @@ RecyclerView.Adapter<FilmeRecyclerAdapter.ViewHolder>(){
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val nomeFilme: TextView = itemView.txtFilmeListaNome
         val descricaoFilme: TextView = itemView.txtFilmeListaDescricao
+
+        init{
+            itemView.setOnClickListener{
+                onItemClick?.invoke(filmes[adapterPosition])
+            }
+        }
     }
 
     fun setListaFilmes(listaFilmes: List<Filme>) {

@@ -8,4 +8,11 @@
         android:icon="@drawable/ic_save_menu_24dp"
         android:title="@string/salvar"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_deletar_filme"
+        android:icon="@drawable/ic_delete_24dp"
+        android:title="@string/deletar"
+        app:showAsAction="ifRoom"
+        android:visible="false"/>
 </menu>

@@ -24,8 +24,15 @@ class ListaFilmeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_lista_filme)
 
         val recyclerView = rvListaFilme
-        val adapter = FilmeRecyclerAdapter(this)
+        var adapter = FilmeRecyclerAdapter(this)
         recyclerView.adapter = adapter
+
+        adapter.onItemClick = {
+           val intent = Intent(this@ListaFilmeActivity, NovoFilmeActivity::class.java)
+           intent.putExtra(NovoFilmeActivity.EXTRA_REPLY, it)
+           startActivityForResult(intent, requestCodeAddFilme)
+            //filmeViewModel.delete(it)
+        }
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         filmeViewModel =
@@ -46,8 +53,17 @@ class ListaFilmeActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == requestCodeAddFilme && resultCode == Activity.RESULT_OK){
             data.let {
-                val filme : Filme = data?.getSerializableExtra(NovoFilmeActivity.EXTRA_REPLY) as Filme
-                filmeViewModel.insert(filme)
+                try{
+                    val filme: Filme = data?.getSerializableExtra(NovoFilmeActivity.EXTRA_REPLY) as Filme
+                    if (filme.id > 0) {
+                        filmeViewModel.update(filme)
+                    } else {
+                        filmeViewModel.insert(filme)
+                    }
+                }catch (e:Exception){
+                    val filme: Filme = data?.getSerializableExtra(NovoFilmeActivity.EXTRA_DELETE) as Filme
+                    filmeViewModel.delete(filme)
+                }
             }
         }else{
             Toast.makeText(applicationContext, R.string.empty_not_saved, Toast.LENGTH_LONG).show()
